@@ -1,5 +1,3 @@
-import { act } from "react";
-
 export function generarCodigoVerifier() {
     const numeroSecreto = new Uint8Array(64)
     crypto.getRandomValues(numeroSecreto);

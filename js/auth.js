@@ -1,4 +1,4 @@
-export function generateCodeVerifier() {
+export function generarCodigoVerifier() {
     const numeroSecreto = new Uint8Array(64)
     crypto.getRandomValues(numeroSecreto);
     const base64Traduccion = btoa(String.fromCharCode(...numeroSecreto));
@@ -9,7 +9,7 @@ export function generateCodeVerifier() {
     return verifier;
 }
 
-export async function generateCodeChallenge(verifier) {
+export async function generarCodigoChallenge(verifier) {
     const textoTransformado = new TextEncoder().encode(verifier);
     const resultado = await crypto.subtle.digest('SHA-256', textoTransformado);
     const bytes = new Uint8Array(resultado);
@@ -23,8 +23,8 @@ export async function generateCodeChallenge(verifier) {
 
 
 export async function login() {
-    const verificador = generateCodeVerifier();
-    const codigoChallenge = await generateCodeChallenge(verificador);
+    const verificador = generarCodigoVerifier();
+    const codigoChallenge = await generarCodigoChallenge(verificador);
     localStorage.setItem('code_verifier', verificador);
 
     const params = new URLSearchParams({

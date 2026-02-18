@@ -1,4 +1,4 @@
-import { getArtistsDetails } from './api.js';
+
 
 export async function calcularMainstream(artistas, canciones) {
     let mediaPopularidadArtista = 0;

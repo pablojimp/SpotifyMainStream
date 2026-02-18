@@ -14,18 +14,19 @@
     <script type="module">
         import { login, logout } from './js/auth.js';
         import { getTopArtist, getTopTracks } from './js/api.js';
-        import {calcularMainstream} from "./js/analysis.js";
+        import { calcularMainstream } from "./js/analysis.js";
 
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);
 
+
+        const resultado = calcularMainstream(artistas, canciones);
         const artistas = await getTopArtist();
         const canciones = await getTopTracks();
 
-        const resultado = calcularMainstream(artistas, canciones);
+        console.log('Artistas raw:', artistas);
+        console.log('Canciones raw:', canciones);
 
-        console.log('Índice:', resultado.indice);
-        console.log('Nivel:', resultado.nivel);
     </script>
 
 </body>

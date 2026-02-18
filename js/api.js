@@ -28,18 +28,18 @@ export async function getTopTracks() {
     return data
 }
 
-export async function getTop50Artist() {
-    const tokenRecibido = await getToken();
+// export async function getTop50Artist() {
+//     const tokenRecibido = await getToken();
 
-    const response = await fetch('https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF/tracks', {
-        headers: {
-            'Authorization': `Bearer ${tokenRecibido}`
-        }
-    });
+//     const response = await fetch('https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF/tracks', {
+//         headers: {
+//             'Authorization': `Bearer ${tokenRecibido}`
+//         }
+//     });
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    return data
-}
+//     return data
+// }
 
 

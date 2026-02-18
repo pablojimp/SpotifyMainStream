@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Spotify Mainstream</title>
 </head>
+
 <body>
 
     <button id="btn-login">Conectar con Spotify</button>
     <button id="btn-logout">Desconectar Spotify</button>
 
-<script type="module">
-    import { login, logout } from './js/auth.js';
-    import { getTopArtist, getTopTracks, getTop50Artist } from './js/api.js';
+    <script type="module">
+        import { login, logout } from './js/auth.js';
+        import { getTopArtist, getTopTracks, getTop50Artist } from './js/api.js';
 
-    document.getElementById('btn-login').addEventListener('click', login);
-    document.getElementById('btn-logout').addEventListener('click', logout);
+        document.getElementById('btn-login').addEventListener('click', login);
+        document.getElementById('btn-logout').addEventListener('click', logout);
 
-    // prueba temporal
-    const artistas = await getTopArtist();
-    const canciones = await getTopTracks();
-    const global = await getTop50Artist();
+        const artistas = await getTopArtist();
+        const canciones = await getTopTracks();
 
-    console.log('Artistas:', artistas);
-    console.log('Canciones:', canciones);
-    console.log('Global:', global);
-</script>
+        const resultado = calcularMainstream(artistas, canciones);
+
+        console.log('Índice:', resultado.indice);
+        console.log('Nivel:', resultado.nivel);
+    </script>
 
 </body>
+
 </html>

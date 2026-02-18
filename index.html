@@ -20,6 +20,10 @@
         document.getElementById('btn-logout').addEventListener('click', logout);
 
 
+        
+        const artistas = await getTopArtist();
+        const detalles = await getArtistsPopularity(artistas);
+        console.log(detalles[0]); // mira si tiene popularity
         const canciones = await getTopTracks();
         const resultado = await calcularMainstream(artistas, canciones); // ← añade await
 
@@ -29,9 +33,6 @@
 
 
 
-        const artistas = await getTopArtist();
-        const detalles = await getArtistsPopularity(artistas);
-        console.log(detalles[0]); // mira si tiene popularity
     </script>
 
 </body>

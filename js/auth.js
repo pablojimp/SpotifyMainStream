@@ -40,3 +40,29 @@ export async function login() {
 
 }
 
+export async function handleCallback() {
+    const parametros = new URLSearchParams(window.location.search);
+    const codigo = parametros.get("code");
+    const verifier = localStorage.getItem("code_verifier");
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            client_id: 'e156943e4962490888ce0a7d5389c297',
+            grant_type: 'authorization_code',
+            code: codigo,
+            redirect_uri: 'https://spotify-main-stream.vercel.app/callback.html',
+            code_verifier: verifier,
+        })
+    });
+
+    const data = await response.json();
+    localStorage.setItem('access_token', data.access_token);
+    localStorage.setItem('refresh_token', data.refresh_token);
+    localStorage.setItem('expires_at', Date.now() + data.expires_in * 1000);
+    localStorage.removeItem('code_verifier');
+    window.location.href = '/';
+}
+

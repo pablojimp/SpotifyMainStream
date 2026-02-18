@@ -19,13 +19,19 @@
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);
 
-        const artistas = await getTopArtist();
+
         const canciones = await getTopTracks();
         const resultado = await calcularMainstream(artistas, canciones); // ← añade await
 
         console.log('Índice:', resultado.indice);
         console.log('Nivel:', resultado.nivel);
 
+
+
+
+        const artistas = await getTopArtist();
+        const detalles = await getArtistsPopularity(artistas);
+        console.log(detalles[0]); // mira si tiene popularity
     </script>
 
 </body>

@@ -19,13 +19,12 @@
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);
 
-
-        // const resultado = calcularMainstream(artistas, canciones);
         const artistas = await getTopArtist();
         const canciones = await getTopTracks();
+        const resultado = await calcularMainstream(artistas, canciones); // ← añade await
 
-        console.log('Artistas raw:', artistas);
-        console.log('Canciones raw:', canciones);
+        console.log('Índice:', resultado.indice);
+        console.log('Nivel:', resultado.nivel);
 
     </script>
 

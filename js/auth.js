@@ -1,3 +1,5 @@
+import { act } from "react";
+
 export function generarCodigoVerifier() {
     const numeroSecreto = new Uint8Array(64)
     crypto.getRandomValues(numeroSecreto);
@@ -66,3 +68,53 @@ export async function handleCallback() {
     window.location.href = '/';
 }
 
+export async function getToken() {
+    const leerAccess_token = localStorage.getItem("access_token");
+    const leerExpires_at = localStorage.getItem("expires_at");
+    let respuesta = null
+
+    if (leerAccess_token == null) {
+        respuesta = null
+    } else {
+        if (Date.now() > leerExpires_at - 60000) {
+            respuesta = await refreshAccessToken()
+        }
+        else {
+            respuesta = leerAccess_token;
+        }
+    }
+    return respuesta
+}
+
+export async function refreshAccessToken() {
+    const leerRefreshToken = localStorage.getItem("refresh_token")
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            client_id: 'e156943e4962490888ce0a7d5389c297',
+            grant_type: 'refresh_token',
+            refresh_token: leerRefreshToken,
+        })
+    });
+
+    const data = await response.json();
+    localStorage.setItem('access_token', data.access_token);
+    localStorage.setItem('expires_at', Date.now() + data.expires_in * 1000);
+
+    if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+    }
+
+    return data.access_token
+}
+
+
+export async function logout() {
+    localStorage.clear()
+    window.location.href = '/';
+
+}

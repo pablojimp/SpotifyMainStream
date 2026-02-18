@@ -26,8 +26,17 @@ export async function login() {
     const verificador = generateCodeVerifier();
     const codigoChallenge = await generateCodeChallenge(verificador);
     localStorage.setItem('code_verifier', verificador);
-    
 
+    const params = new URLSearchParams({
+        client_id: 'e156943e4962490888ce0a7d5389c297',
+        response_type: 'code',
+        redirect_uri: 'https://spotify-main-stream.vercel.app/callback.html',
+        scope: 'user-top-read',
+        code_challenge_method: 'S256',
+        code_challenge: codigoChallenge,
+    });
+
+    window.location.href = `https://accounts.spotify.com/authorize?${params}`;
 
 }
 

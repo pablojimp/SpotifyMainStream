@@ -1,25 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Spotify Mainstream</title>
 </head>
-
 <body>
-    <button id="btn-verifier">Generar Verifier</button>
+
+    <button id="btn-login">Conectar con Spotify</button>
 
     <script type="module">
-        import { generateCodeVerifier, generateCodeChallenge } from './js/auth.js';
+        import { login } from './js/auth.js';
 
-        document.getElementById('btn-verifier').addEventListener('click', async () => {
-            const verifier = generateCodeVerifier();
-            const challenge = await generateCodeChallenge(verifier);
-            console.log('Verifier:', verifier);
-            console.log('Challenge:', challenge);
-        });
+        document.getElementById('btn-login').addEventListener('click', login);
     </script>
-</body>
 
+</body>
 </html>

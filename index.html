@@ -14,6 +14,7 @@
     <script type="module">
         import { login, logout } from './js/auth.js';
         import { getTopArtist, getTopTracks } from './js/api.js';
+        import {calcularMainstream} from "./js/analysis.js";
 
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);

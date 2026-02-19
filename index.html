@@ -1,69 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Spotify Mainstream</title>
 </head>
-
 <body>
+    
+    <div id="pantalla-login">
+        <h1>¿Qué tan mainstream eres?</h1>
+        <p>Conecta tu Spotify y descúbrelo</p>
+        <button id="btn-login">Conectar con Spotify</button>
+    </div>
 
-    <button id="btn-login">Conectar con Spotify</button>
-    <button id="btn-logout">Desconectar Spotify</button>
+
+    <div id="pantalla-app" style="display:none">
+        <button id="btn-logout">Cerrar sesión</button>
+
+        <h2>Tus Top 5 Artistas</h2>
+        <div id="lista-artistas"></div>
+
+        <h2>Tus Top 5 Canciones</h2>
+        <div id="lista-canciones"></div>
+
+        <h2>Tu índice mainstream</h2>
+        <div id="resultado"></div>
+    </div>
 
     <script type="module">
-        import { login, logout } from './js/auth.js';
+        import { login, logout, getToken } from './js/auth.js';
         import { getTopArtist, getTopTracks } from './js/api.js';
-        import { calcularMainstream } from "./js/analysis.js";
-
-        let mensajeArtistas = ""
-        let mensajeCanciones = ""
-        const artistas = await getTopArtist();
-        const canciones = await getTopTracks();
+        import { calcularMainstream } from './js/analysis.js';
 
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);
 
+        const token = await getToken();
 
-
-
-
-        for (const artista of artistas.items) {
-            mensajeArtistas += artista.name + " | "
+        if (!token) {
+            // Sin sesión: mostramos solo el login
+            document.getElementById('pantalla-login').style.display = 'block';
+        } else {
+            // Con sesión: ocultamos login y cargamos datos
+            document.getElementById('pantalla-login').style.display = 'none';
+            document.getElementById('pantalla-app').style.display = 'block';
+            cargarDatos();
         }
 
+        async function cargarDatos() {
+            const artistas = await getTopArtist();
+            const canciones = await getTopTracks();
+            const resultado = calcularMainstream(canciones);
 
-        for (const cancion of canciones.items) {
+            // Top 5 artistas
+            const contenedorArtistas = document.getElementById('lista-artistas');
+            artistas.items.slice(0, 5).forEach((artista, index) => {
+                const div = document.createElement('div');
+                div.textContent = `#${index + 1} ${artista.name}`;
+                contenedorArtistas.appendChild(div);
+            });
 
+            // Top 5 canciones
+            const contenedorCanciones = document.getElementById('lista-canciones');
+            canciones.items.slice(0, 5).forEach((cancion, index) => {
+                const div = document.createElement('div');
+                div.textContent = `#${index + 1} ${cancion.name} - ${cancion.artists[0].name}`;
+                contenedorCanciones.appendChild(div);
+            });
 
-            mensajeCanciones += cancion.name + " - ";
-
-            for (let index = 0; index < cancion.artists.length; index++) {
-
-                if ((index + 1) == cancion.artists.length) {
-                    mensajeCanciones += cancion.artists[index].name
-                } else {
-                    mensajeCanciones += cancion.artists[index].name + " - "
-                }
-
-
-
-
-            }
-
-            mensajeCanciones += " | "
+            // Resultado mainstream
+            document.getElementById('resultado').textContent = 
+                `Índice: ${Math.round(resultado.indice)} — ${resultado.nivel}`;
         }
-
-
-        console.log(canciones.items)
-        console.log('Artistas:', mensajeArtistas);
-        console.log('Canciones:', mensajeCanciones);
-
-
-
 
     </script>
-
 </body>
-
 </html>

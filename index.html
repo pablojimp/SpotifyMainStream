@@ -16,22 +16,29 @@
         import { getTopArtist, getTopTracks, getArtistsPopularity } from './js/api.js';
         import { calcularMainstream } from "./js/analysis.js";
 
+        let mensajeArtistas = ""
+        let mensajeCanciones = ""
+        const artistas = await getTopArtist();
+        const canciones = await getTopTracks();
+
         document.getElementById('btn-login').addEventListener('click', login);
         document.getElementById('btn-logout').addEventListener('click', logout);
 
 
+
+        for (const artista of artistas) {
+
+            mensajeArtistas += artista.name +" | "  
+        }
+
         
-        const artistas = await getTopArtist();
-        const detalles = await getArtistsPopularity(artistas);
-        console.log(detalles[0]); // mira si tiene popularity
-        const canciones = await getTopTracks();
-        const resultado = await calcularMainstream(artistas, canciones); // ← añade await
+        for (const cancion of canciones) {
 
-        console.log('Índice:', resultado.indice);
-        console.log('Nivel:', resultado.nivel);
+            mensajeCanciones += cancion.name +" | "  
+        }
 
-
-
+        console.log('Artistas:', mensajeArtistas);
+        console.log('Canciones:', mensajeCanciones);
 
     </script>
 

@@ -27,19 +27,3 @@ export async function getTopTracks() {
 
     return data
 }
-
-
-export async function getArtistsPopularity(artistas) {
-    const tokenRecibido = await getToken();
-    
-    const promesas = artistas.items.map(artista => 
-        fetch(`https://api.spotify.com/v1/artists/${artista.id}`, {
-            headers: { 'Authorization': `Bearer ${tokenRecibido}` }
-        }).then(res => res.json())
-    );
-
-    const detalles = await Promise.all(promesas);
-    return detalles;
-}
-
-

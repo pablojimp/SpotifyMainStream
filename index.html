@@ -29,12 +29,21 @@
 
 
         for (const artista of artistas.items) {
-            mensajeArtistas += artista.name +" | "  
+            mensajeArtistas += artista.name + " | "
         }
 
-        
+
         for (const cancion of canciones.items) {
-            mensajeCanciones += cancion.name +" - "; 
+
+
+            mensajeCanciones += cancion.name + " - ";
+
+            for (let index = 0; index < cancion.artists.length; index++) {
+                mensajeCanciones += cancion.artists[index].name + " - "
+                
+            }
+
+            mensajeCanciones += " | "
         }
 
 

@@ -26,19 +26,24 @@
 
 
 
-        for (const artista of artistas.items) {
 
+
+        for (const artista of artistas.items) {
             mensajeArtistas += artista.name +" | "  
         }
 
         
         for (const cancion of canciones.items) {
-
-            mensajeCanciones += cancion.name +" | "  
+            mensajeCanciones += cancion.name +" - "; 
         }
 
+
+        console.log(canciones.items)
         console.log('Artistas:', mensajeArtistas);
         console.log('Canciones:', mensajeCanciones);
+
+
+
 
     </script>
 

@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a0a;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* ─── PANTALLA LOGIN ─────────────────────────────── */
+
+#pantalla-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    text-align: center;
+}
+
+#pantalla-login h1 {
+    font-size: 2rem;
+    color: #1DB954;
+    letter-spacing: 2px;
+}
+
+#pantalla-login p {
+    color: #888;
+    font-size: 1rem;
+}
+
+#btn-login {
+    background-color: #1DB954;
+    color: black;
+    border: none;
+    padding: 14px 40px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+}
+
+#btn-login:hover {
+    background-color: #1aa34a;
+}
+
+/* ─── TICKET ─────────────────────────────────────── */
+
+#pantalla-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: imprimir 1.5s ease-out forwards;
+    width: 380px;
+}
+
+@keyframes imprimir {
+    from {
+        transform: translateY(60px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.ticket {
+    background: #f5f0e8;
+    color: #1a1a1a;
+    width: 100%;
+    padding: 0 30px 30px 30px;
+    position: relative;
+}
+
+/* Borde dentado arriba */
+.ticket::before {
+    content: '';
+    display: block;
+    height: 20px;
+    background: radial-gradient(circle at 10px 10px, #0a0a0a 10px, #f5f0e8 0) repeat-x;
+    background-size: 20px 20px;
+    margin: 0 -30px 20px -30px;
+}
+
+/* Borde dentado abajo */
+.ticket::after {
+    content: '';
+    display: block;
+    height: 20px;
+    background: radial-gradient(circle at 10px 0px, #0a0a0a 10px, #f5f0e8 0) repeat-x;
+    background-size: 20px 20px;
+    margin: 30px -30px 0 -30px;
+}
+
+/* ─── CONTENIDO DEL TICKET ───────────────────────── */
+
+.ticket-header {
+    text-align: center;
+    padding: 10px 0 20px 0;
+    border-bottom: 1px dashed #aaa;
+    margin-bottom: 20px;
+}
+
+.ticket-header h1 {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.ticket-header p {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.ticket-seccion {
+    margin-bottom: 20px;
+}
+
+.ticket-seccion h2 {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1px dashed #aaa;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+}
+
+.ticket-seccion .item {
+    font-size: 0.85rem;
+    padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket-resultado {
+    text-align: center;
+    border-top: 1px dashed #aaa;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.ticket-resultado .indice {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1DB954;
+}
+
+.ticket-resultado .nivel {
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.ticket-footer {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 20px;
+    border-top: 1px dashed #aaa;
+    padding-top: 16px;
+    letter-spacing: 1px;
+}
+
+/* ─── BOTÓN LOGOUT ───────────────────────────────── */
+
+#btn-logout {
+    background: transparent;
+    border: 1px solid #333;
+    color: #666;
+    padding: 8px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+}
+
+#btn-logout:hover {
+    border-color: #1DB954;
+    color: #1DB954;
+}

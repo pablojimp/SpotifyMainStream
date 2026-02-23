@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>¿Como de MainStream Eres?</title>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
@@ -14,20 +15,35 @@
         <button id="btn-login">Conectar con Spotify</button>
     </div>
 
-
-
-
     <div id="pantalla-app" style="display:none">
         <button id="btn-logout">Cerrar sesión</button>
 
-        <h2>Tus Top 5 Artistas</h2>
-        <div id="lista-artistas"></div>
+        <div class="ticket">
+            <div class="ticket-header">
+                <h1>🎵 Mainstream Report</h1>
+                <p id="fecha"></p>
+            </div>
 
-        <h2>Tus Top 5 Canciones</h2>
-        <div id="lista-canciones"></div>
+            <div class="ticket-seccion">
+                <h2>Top 5 Artistas</h2>
+                <div id="lista-artistas"></div>
+            </div>
 
-        <h2>Tu índice mainstream</h2>
-        <div id="resultado"></div>
+            <div class="ticket-seccion">
+                <h2>Top 5 Canciones</h2>
+                <div id="lista-canciones"></div>
+            </div>
+
+            <div class="ticket-resultado">
+                <div class="indice" id="indice-numero"></div>
+                <div class="nivel" id="indice-nivel"></div>
+            </div>
+
+            <div class="ticket-footer">
+                <p>GRACIAS POR TU MAL GUSTO MUSICAL</p>
+                <p>★ SPOTIFY MAINSTREAM ANALYZER ★</p>
+            </div>
+        </div>
     </div>
 
     <script type="module">
@@ -41,10 +57,8 @@
         const token = await getToken();
 
         if (!token) {
-            // Sin sesión: mostramos solo el login
             document.getElementById('pantalla-login').style.display = 'block';
         } else {
-            // Con sesión: ocultamos login y cargamos datos
             document.getElementById('pantalla-login').style.display = 'none';
             document.getElementById('pantalla-app').style.display = 'block';
             cargarDatos();
@@ -55,25 +69,25 @@
             const canciones = await getTopTracks();
             const resultado = calcularMainstream(canciones);
 
-            // Top 5 artistas
+            document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-ES');
+            document.getElementById('indice-numero').textContent = Math.round(resultado.indice) + '/100';
+            document.getElementById('indice-nivel').textContent = resultado.nivel;
+
             const contenedorArtistas = document.getElementById('lista-artistas');
             artistas.items.slice(0, 5).forEach((artista, index) => {
                 const div = document.createElement('div');
+                div.className = 'item';
                 div.textContent = `#${index + 1} ${artista.name}`;
                 contenedorArtistas.appendChild(div);
             });
 
-            // Top 5 canciones
             const contenedorCanciones = document.getElementById('lista-canciones');
             canciones.items.slice(0, 5).forEach((cancion, index) => {
                 const div = document.createElement('div');
+                div.className = 'item';
                 div.textContent = `#${index + 1} ${cancion.name} - ${cancion.artists[0].name}`;
                 contenedorCanciones.appendChild(div);
             });
-
-            // Resultado mainstream
-            document.getElementById('resultado').textContent =
-                `Índice: ${Math.round(resultado.indice)} — ${resultado.nivel}`;
         }
 
     </script>

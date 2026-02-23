@@ -1,197 +1,429 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&display=swap');
 
-* {
+/* ─── VARIABLES ──────────────────────────────────────────── */
+:root {
+    --negro: #080808;
+    --negro2: #111111;
+    --papel: #f7f2e8;
+    --papel2: #ede8db;
+    --tinta: #1a1a1a;
+    --tinta2: #3a3a3a;
+    --tinta3: #888880;
+    --verde: #1DB954;
+    --verde2: #17a349;
+    --dorado: #c9a84c;
+    --dorado2: #e8c96a;
+}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ─── BODY ───────────────────────────────────────────────── */
 body {
-    background-color: #0a0a0a;
+    background-color: var(--negro);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    position: relative;
 }
 
-/* ─── PANTALLA LOGIN ─────────────────────────────── */
+/* Grain texture overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+}
 
+/* Fondo con luz ambiental sutil */
+body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(29, 185, 84, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ─── PANTALLA LOGIN ─────────────────────────────────────── */
 #pantalla-login {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    color: white;
+    gap: 32px;
     text-align: center;
+    padding: 40px;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #pantalla-login h1 {
-    font-size: 2rem;
-    color: #1DB954;
-    letter-spacing: 2px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--papel);
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+#pantalla-login h1 span {
+    color: var(--verde);
+    font-style: italic;
 }
 
 #pantalla-login p {
-    color: #888;
-    font-size: 1rem;
+    color: var(--tinta3);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 #btn-login {
-    background-color: #1DB954;
-    color: black;
+    background: var(--verde);
+    color: var(--negro);
     border: none;
-    padding: 14px 40px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    cursor: pointer;
+    padding: 16px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    transition: background-color 0.2s;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+#btn-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--dorado2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
 }
 
 #btn-login:hover {
-    background-color: #1aa34a;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(29, 185, 84, 0.35);
 }
 
-/* ─── TICKET ─────────────────────────────────────── */
+#btn-login:hover::before {
+    opacity: 0;
+}
 
+/* ─── PANTALLA APP ───────────────────────────────────────── */
 #pantalla-app {
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: imprimir 1.5s ease-out forwards;
-    width: 380px;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px 16px 60px;
+    animation: salirImpresora 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
-@keyframes imprimir {
-    from {
-        transform: translateY(60px);
+@keyframes salirImpresora {
+    0% {
+        transform: translateY(80px);
         opacity: 0;
+        clip-path: inset(100% 0 0 0);
     }
-    to {
-        transform: translateY(0);
+    30% {
         opacity: 1;
     }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+        clip-path: inset(0% 0 0 0);
+    }
 }
 
-.ticket {
-    background: #f5f0e8;
-    color: #1a1a1a;
-    width: 100%;
-    padding: 0 30px 30px 30px;
-    position: relative;
-}
-
-/* Borde dentado arriba */
-.ticket::before {
-    content: '';
-    display: block;
-    height: 20px;
-    background: radial-gradient(circle at 10px 10px, #0a0a0a 10px, #f5f0e8 0) repeat-x;
-    background-size: 20px 20px;
-    margin: 0 -30px 20px -30px;
-}
-
-/* Borde dentado abajo */
-.ticket::after {
-    content: '';
-    display: block;
-    height: 20px;
-    background: radial-gradient(circle at 10px 0px, #0a0a0a 10px, #f5f0e8 0) repeat-x;
-    background-size: 20px 20px;
-    margin: 30px -30px 0 -30px;
-}
-
-/* ─── CONTENIDO DEL TICKET ───────────────────────── */
-
-.ticket-header {
-    text-align: center;
-    padding: 10px 0 20px 0;
-    border-bottom: 1px dashed #aaa;
-    margin-bottom: 20px;
-}
-
-.ticket-header h1 {
-    font-size: 1.2rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-.ticket-header p {
-    font-size: 0.75rem;
-    color: #666;
-    margin-top: 4px;
-}
-
-.ticket-seccion {
-    margin-bottom: 20px;
-}
-
-.ticket-seccion h2 {
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-bottom: 1px dashed #aaa;
-    padding-bottom: 6px;
-    margin-bottom: 10px;
-}
-
-.ticket-seccion .item {
-    font-size: 0.85rem;
-    padding: 4px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.ticket-resultado {
-    text-align: center;
-    border-top: 1px dashed #aaa;
-    padding-top: 20px;
-    margin-top: 10px;
-}
-
-.ticket-resultado .indice {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #1DB954;
-}
-
-.ticket-resultado .nivel {
-    font-size: 1rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-top: 4px;
-}
-
-.ticket-footer {
-    text-align: center;
-    font-size: 0.7rem;
-    color: #888;
-    margin-top: 20px;
-    border-top: 1px dashed #aaa;
-    padding-top: 16px;
-    letter-spacing: 1px;
-}
-
-/* ─── BOTÓN LOGOUT ───────────────────────────────── */
-
+/* ─── BOTÓN LOGOUT ───────────────────────────────────────── */
 #btn-logout {
     background: transparent;
-    border: 1px solid #333;
-    color: #666;
-    padding: 8px 20px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    cursor: pointer;
-    letter-spacing: 2px;
+    border: 1px solid #222;
+    color: #444;
+    padding: 8px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 20px;
-    transition: all 0.2s;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: all 0.25s;
 }
 
 #btn-logout:hover {
-    border-color: #1DB954;
-    color: #1DB954;
+    border-color: var(--verde);
+    color: var(--verde);
+}
+
+/* ─── TICKET ─────────────────────────────────────────────── */
+.ticket {
+    background: var(--papel);
+    width: 100%;
+    position: relative;
+    box-shadow:
+        0 2px 4px rgba(0,0,0,0.3),
+        0 8px 16px rgba(0,0,0,0.4),
+        0 24px 48px rgba(0,0,0,0.5),
+        0 48px 80px rgba(0,0,0,0.3);
+    padding: 0 36px 36px;
+}
+
+/* Borde dentado superior */
+.ticket::before {
+    content: '';
+    display: block;
+    height: 18px;
+    background:
+        radial-gradient(circle at 9px 9px, var(--negro) 9px, var(--papel) 9px) repeat-x;
+    background-size: 18px 18px;
+    margin: 0 -36px 28px -36px;
+}
+
+/* Borde dentado inferior */
+.ticket::after {
+    content: '';
+    display: block;
+    height: 18px;
+    background:
+        radial-gradient(circle at 9px 0px, var(--negro) 9px, var(--papel) 9px) repeat-x;
+    background-size: 18px 18px;
+    margin: 28px -36px 0 -36px;
+}
+
+/* ─── TICKET HEADER ──────────────────────────────────────── */
+.ticket-header {
+    text-align: center;
+    padding-bottom: 24px;
+    border-bottom: 1px dashed #bbb8b0;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.ticket-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    font-style: italic;
+    color: var(--tinta);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+}
+
+.ticket-logo span {
+    color: var(--verde2);
+}
+
+.ticket-subtitulo {
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--tinta3);
+    margin-bottom: 16px;
+}
+
+.ticket-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--tinta3);
+    letter-spacing: 1px;
+    margin-top: 12px;
+}
+
+/* ─── TICKET SECCIÓN ─────────────────────────────────────── */
+.ticket-seccion {
+    margin-bottom: 22px;
+}
+
+.ticket-seccion-titulo {
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--tinta3);
+    border-bottom: 1px dashed #bbb8b0;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px dotted #d8d4cc;
+    gap: 12px;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.item-numero {
+    font-size: 0.6rem;
+    color: var(--tinta3);
+    min-width: 20px;
+    font-family: 'DM Mono', monospace;
+}
+
+.item-nombre {
+    font-size: 0.8rem;
+    color: var(--tinta);
+    flex: 1;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-dato {
+    font-size: 0.6rem;
+    color: var(--tinta3);
+    white-space: nowrap;
+}
+
+/* ─── TICKET RESULTADO ───────────────────────────────────── */
+.ticket-resultado {
+    text-align: center;
+    border-top: 1px dashed #bbb8b0;
+    padding-top: 24px;
+    margin-top: 4px;
+    position: relative;
+}
+
+.resultado-label {
+    font-size: 0.6rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--tinta3);
+    margin-bottom: 8px;
+}
+
+.resultado-indice {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--tinta);
+    position: relative;
+    display: inline-block;
+}
+
+.resultado-indice::after {
+    content: '/100';
+    font-size: 1rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--tinta3);
+    position: absolute;
+    bottom: 12px;
+    right: -44px;
+    font-weight: 300;
+}
+
+.resultado-nivel {
+    font-size: 0.7rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--tinta);
+    margin-top: 16px;
+    font-weight: 500;
+    padding: 8px 20px;
+    border: 1px solid var(--tinta2);
+    display: inline-block;
+}
+
+.resultado-barra {
+    margin: 20px 0 4px;
+    height: 3px;
+    background: var(--papel2);
+    position: relative;
+    overflow: hidden;
+}
+
+.resultado-barra-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--verde2), var(--dorado));
+    transition: width 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+    animation: llenarBarra 1.8s 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes llenarBarra {
+    from { width: 0%; }
+}
+
+/* ─── TICKET FOOTER ──────────────────────────────────────── */
+.ticket-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed #bbb8b0;
+}
+
+.ticket-footer p {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--tinta3);
+    line-height: 2;
+}
+
+.ticket-barcode {
+    margin: 16px auto 0;
+    width: 140px;
+    height: 40px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--tinta) 0px,
+        var(--tinta) 2px,
+        var(--papel) 2px,
+        var(--papel) 4px,
+        var(--tinta) 4px,
+        var(--tinta) 5px,
+        var(--papel) 5px,
+        var(--papel) 8px,
+        var(--tinta) 8px,
+        var(--tinta) 9px,
+        var(--papel) 9px,
+        var(--papel) 12px,
+        var(--tinta) 12px,
+        var(--tinta) 15px,
+        var(--papel) 15px,
+        var(--papel) 17px,
+        var(--tinta) 17px,
+        var(--tinta) 18px,
+        var(--papel) 18px,
+        var(--papel) 21px
+    );
+    opacity: 0.5;
+}
+
+/* ─── LÍNEA DECORATIVA ───────────────────────────────────── */
+.divider {
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--tinta3);
+    margin: 4px 0;
 }

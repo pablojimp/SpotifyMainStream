@@ -3,46 +3,67 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>¿Como de MainStream Eres?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué tan Mainstream Eres?</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
 
+    <!-- PANTALLA LOGIN -->
     <div id="pantalla-login">
-        <h1>¿Qué tan mainstream eres?</h1>
+        <h1>¿Qué tan<br><span>mainstream</span><br>eres?</h1>
         <p>Conecta tu Spotify y descúbrelo</p>
         <button id="btn-login">Conectar con Spotify</button>
     </div>
 
+    <!-- PANTALLA APP -->
     <div id="pantalla-app" style="display:none">
+
         <button id="btn-logout">Cerrar sesión</button>
 
         <div class="ticket">
+
+            <!-- CABECERA -->
             <div class="ticket-header">
-                <h1>🎵 Mainstream Report</h1>
-                <p id="fecha"></p>
+                <div class="ticket-logo">Main<span>stream</span>?</div>
+                <div class="ticket-subtitulo">Music Taste Analyzer</div>
+                <div class="divider">· · · · · · · · · · · · · · · · · · ·</div>
+                <div class="ticket-meta">
+                    <span id="fecha"></span>
+                    <span id="nombre-usuario"></span>
+                </div>
             </div>
 
+            <!-- TOP ARTISTAS -->
             <div class="ticket-seccion">
-                <h2>Top 5 Artistas</h2>
+                <div class="ticket-seccion-titulo">Top 5 Artistas</div>
                 <div id="lista-artistas"></div>
             </div>
 
+            <!-- TOP CANCIONES -->
             <div class="ticket-seccion">
-                <h2>Top 5 Canciones</h2>
+                <div class="ticket-seccion-titulo">Top 5 Canciones</div>
                 <div id="lista-canciones"></div>
             </div>
 
+            <!-- RESULTADO -->
             <div class="ticket-resultado">
-                <div class="indice" id="indice-numero"></div>
-                <div class="nivel" id="indice-nivel"></div>
+                <div class="resultado-label">Tu índice mainstream</div>
+                <div class="resultado-indice" id="indice-numero">--</div>
+                <div class="resultado-barra">
+                    <div class="resultado-barra-fill" id="barra-fill" style="width: 0%"></div>
+                </div>
+                <div class="resultado-nivel" id="indice-nivel">--</div>
             </div>
 
+            <!-- FOOTER -->
             <div class="ticket-footer">
-                <p>GRACIAS POR TU MAL GUSTO MUSICAL</p>
-                <p>★ SPOTIFY MAINSTREAM ANALYZER ★</p>
+                <p>Generado el <span id="fecha-footer"></span></p>
+                <p>★ Spotify Mainstream Analyzer ★</p>
+                <div class="ticket-barcode"></div>
             </div>
+
         </div>
     </div>
 
@@ -57,10 +78,10 @@
         const token = await getToken();
 
         if (!token) {
-            document.getElementById('pantalla-login').style.display = 'block';
+            document.getElementById('pantalla-login').style.display = 'flex';
         } else {
             document.getElementById('pantalla-login').style.display = 'none';
-            document.getElementById('pantalla-app').style.display = 'block';
+            document.getElementById('pantalla-app').style.display = 'flex';
             cargarDatos();
         }
 
@@ -69,23 +90,39 @@
             const canciones = await getTopTracks();
             const resultado = calcularMainstream(canciones);
 
-            document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-ES');
-            document.getElementById('indice-numero').textContent = Math.round(resultado.indice) + '/100';
-            document.getElementById('indice-nivel').textContent = resultado.nivel;
+            // Fecha
+            const hoy = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('fecha').textContent = hoy;
+            document.getElementById('fecha-footer').textContent = hoy;
 
+            // Índice y nivel
+            const indice = Math.round(resultado.indice);
+            document.getElementById('indice-numero').textContent = indice;
+            document.getElementById('indice-nivel').textContent = resultado.nivel;
+            document.getElementById('barra-fill').style.width = indice + '%';
+
+            // Top 5 artistas
             const contenedorArtistas = document.getElementById('lista-artistas');
             artistas.items.slice(0, 5).forEach((artista, index) => {
                 const div = document.createElement('div');
                 div.className = 'item';
-                div.textContent = `#${index + 1} ${artista.name}`;
+                div.innerHTML = `
+                    <span class="item-numero">#${index + 1}</span>
+                    <span class="item-nombre">${artista.name}</span>
+                `;
                 contenedorArtistas.appendChild(div);
             });
 
+            // Top 5 canciones
             const contenedorCanciones = document.getElementById('lista-canciones');
             canciones.items.slice(0, 5).forEach((cancion, index) => {
                 const div = document.createElement('div');
                 div.className = 'item';
-                div.textContent = `#${index + 1} ${cancion.name} - ${cancion.artists[0].name}`;
+                div.innerHTML = `
+                    <span class="item-numero">#${index + 1}</span>
+                    <span class="item-nombre">${cancion.name}</span>
+                    <span class="item-dato">${cancion.artists[0].name}</span>
+                `;
                 contenedorCanciones.appendChild(div);
             });
         }
